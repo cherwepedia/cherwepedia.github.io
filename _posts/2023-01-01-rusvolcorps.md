@@ -6,7 +6,7 @@ favorites: true
 intro: >
   **Русский добровольческий корпус** (РДК, RVC) — единственная действующая российская оппозиция, военно-политическая организация, состоящая из русских добровольцев, воюющая на стороне Украины против правительства Российской Федерации с августа 2022 года.
 infobox:
-  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Russian_Volunteer_Corps_flag.svg/800px-Russian_Volunteer_Corps_flag.svg.png"
+  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Flag_of_the_Russian_Volunteer_Corps.svg/960px-Flag_of_the_Russian_Volunteer_Corps.svg.png"
   data:
     - label: "Полное название"
       value: "Русский добровольческий корпус (РДК)"
@@ -23,14 +23,9 @@ infobox:
     - label: "Годы активности"
       value: "2022 — по настоящее время"
     - label: "Известен как"
-      value: "вооружённое формирование русских добровольцев, проводившее рейды на территорию Российской Федерации"
+      value: "вооружённое формирование русских добровольцев"
     - label: "Статус"
       value: "Активно"
-gallery:
-  - src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Russian_Volunteer_Corps_flag.svg/800px-Russian_Volunteer_Corps_flag.svg.png"
-  - src: "https://rusvolcorps.com/wp-content/uploads/2023/05/rdk-fighters.jpg"
-  - src: "https://upload.wikimedia.org/wikipedia/commons/7/7e/RVC_fighters_2023.jpg"
-  - src: "https://i.imgur.com/rdk-raid-example.jpg"
 ---
 
 **Русский добровольческий корпус** (РДК) — воинское формирование, созданное в августе 2022 года ультраправыми русскими националистами. Организация состоит преимущественно из граждан Российской Федерации и действует на стороне Украины в ходе российско-украинской войны. РДК рассматривается как одно из немногих русских вооружённых формирований, открыто ставящих целью свержение действующего политического режима в России.
