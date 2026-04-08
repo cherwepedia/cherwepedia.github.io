@@ -1,8 +1,10 @@
 # Червепедия - Энциклопедия Черветреда
 title: "Червепедия"
 description: "Энциклопедия Черветреда — тут ты узнаешь всю правду"
+
+# ←←← ИСПРАВЛЕНО: теперь sitemap будет с полными адресами
+url: "https://cherwepedia.github.io"
 baseurl: ""
-url: ""
 
 # Permalink structure
 permalink: /:categories/:title/
@@ -14,7 +16,6 @@ kramdown:
   hard_wrap: false
   auto_ids: true
   toc_levels: 2..3
-
 
 # Defaults
 defaults:
@@ -30,6 +31,7 @@ exclude:
   - Gemfile.lock
   - README.md
   - .same
+  - googlebf448b4455c8f07b.html   # ← убираем верификационный файл Google из sitemap
 
 # Plugins (GitHub Pages compatible)
 plugins:
