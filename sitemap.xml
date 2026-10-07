@@ -1,0 +1,39 @@
+---
+layout: null
+permalink: /sitemap.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- assign newest = site.posts | first %}
+  <url>
+    <loc>{{ '/' | absolute_url | uri_escape | xml_escape }}</loc>
+    {%- if newest %}
+    <lastmod>{{ newest.last_modified_at | default: newest.date | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+  </url>
+  <url>
+    <loc>{{ '/categories/' | absolute_url | uri_escape | xml_escape }}</loc>
+  </url>
+  <url>
+    <loc>{{ '/articles/' | absolute_url | uri_escape | xml_escape }}</loc>
+    {%- if newest %}
+    <lastmod>{{ newest.last_modified_at | default: newest.date | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+  </url>
+{%- for c in site.cats %}
+{%- assign sm_posts = site.posts | where_exp: 'p', 'p.categories contains c.category_id' %}
+{%- if sm_posts.size > 0 %}
+  <url>
+    <loc>{{ c.url | absolute_url | uri_escape | xml_escape }}</loc>
+    {%- assign sm_first = sm_posts | first %}
+    <lastmod>{{ sm_first.last_modified_at | default: sm_first.date | date_to_xmlschema }}</lastmod>
+  </url>
+{%- endif %}
+{%- endfor %}
+{%- for p in site.posts %}
+  <url>
+    <loc>{{ p.url | absolute_url | uri_escape | xml_escape }}</loc>
+    <lastmod>{{ p.last_modified_at | default: p.date | date_to_xmlschema }}</lastmod>
+  </url>
+{%- endfor %}
+</urlset>

@@ -1,0 +1,93 @@
+---
+layout: default
+title: Главная
+permalink: /
+description: "Червепедия — энциклопедия Черветреда: статьи о людях, событиях, мемах и истории треда. Поиск, рубрики, случайные статьи."
+---
+{%- assign visible_count = 0 -%}
+{%- for p in site.posts -%}
+  {%- include post-hidden.html post=p -%}
+  {%- unless post_hidden -%}{%- assign visible_count = visible_count | plus: 1 -%}{%- endunless -%}
+{%- endfor -%}
+<div class="home">
+  <section class="home-hero">
+    <h1 class="home-title">{{ site.title }} — энциклопедия Черветреда</h1>
+    <p class="home-sub">Свободно читаемая энциклопедия о Черветреде.{% if visible_count > 0 %} Сейчас в ней <strong>{{ visible_count }}</strong> {% assign m10 = visible_count | modulo: 10 %}{% assign m100 = visible_count | modulo: 100 %}{% if m10 == 1 and m100 != 11 %}статья{% elsif m10 >= 2 and m10 <= 4 and m100 != 12 and m100 != 13 and m100 != 14 %}статьи{% else %}статей{% endif %}.{% endif %}</p>
+    <form class="search search--hero" role="search" action="{{ '/search/' | relative_url }}" method="get" data-search-form>
+      <input class="search-input" type="search" name="q" placeholder="Что вы хотите найти?" aria-label="Поиск по энциклопедии" autocomplete="off" spellcheck="false" enterkeyhint="search" data-search-input>
+      <button class="search-btn" type="submit" aria-label="Найти">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <div class="search-suggest" data-search-suggest hidden></div>
+    </form>
+    <div class="home-actions">
+      <a class="btn btn-primary" href="{{ '/random/' | relative_url }}" data-random>Случайная статья</a>
+      <a class="btn" href="{{ '/categories/' | relative_url }}">Категории</a>
+      <a class="btn" href="{{ '/articles/' | relative_url }}">Все статьи</a>
+    </div>
+  </section>
+
+  <div class="home-grid">
+    <section class="panel" aria-labelledby="latest-title">
+      <div class="panel-head">
+        <h2 id="latest-title">Последние статьи</h2>
+        <a class="panel-link" href="{{ '/articles/' | relative_url }}">Все статьи →</a>
+      </div>
+      {%- assign latest_n = 0 -%}
+      {%- capture latest_html -%}
+        {%- for p in site.posts -%}
+          {%- include post-hidden.html post=p -%}
+          {%- if post_hidden == false and latest_n < site.home_latest -%}
+            {%- assign latest_n = latest_n | plus: 1 -%}
+            {%- include article-item.html post=p -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if latest_n > 0 %}
+      <ol class="entry-list">{{ latest_html }}</ol>
+      {%- else %}
+      <p class="empty">Пока здесь нет статей.</p>
+      {%- endif %}
+    </section>
+
+    <aside class="panel panel-random" aria-labelledby="random-title">
+      <div class="panel-head">
+        <h2 id="random-title">Случайные статьи</h2>
+        <button class="panel-link panel-btn" type="button" data-random-reroll hidden>Другие ↻</button>
+      </div>
+      <div class="random-cards is-pending" data-random-cards>
+        {%- assign rnd_n = 0 -%}
+        {%- assign rnd_posts = site.posts | reverse -%}
+        {%- for p in rnd_posts -%}
+          {%- include post-hidden.html post=p -%}
+          {%- if post_hidden == false and rnd_n < 3 -%}
+            {%- assign rnd_n = rnd_n | plus: 1 -%}
+            {%- include plain-text.html text=p.intro length=110 -%}
+            <a class="rcard{% unless p.infobox.image %} rcard--noimg{% endunless %}" href="{{ p.url | relative_url }}">
+              {%- if p.infobox.image -%}<img src="{{ p.infobox.image }}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">{%- endif -%}
+              <span class="rcard-body"><span class="rcard-title">{{ p.title | escape }}</span><span class="rcard-text">{{ plain_text | escape }}</span></span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if rnd_n == 0 %}<p class="empty">Пока здесь нет статей.</p>{% endif %}
+      </div>
+    </aside>
+  </div>
+
+  <section class="panel" aria-labelledby="cats-title">
+    <div class="panel-head">
+      <h2 id="cats-title">Разделы энциклопедии</h2>
+      <a class="panel-link" href="{{ '/categories/' | relative_url }}">Все категории →</a>
+    </div>
+    <ul class="cat-chips">
+      {%- for category in site.data.categories -%}
+        {%- unless site.hidden_categories contains category.id -%}
+          {%- assign cc_posts = site.posts | where_exp: 'p', 'p.categories contains category.id' -%}
+          {%- if cc_posts.size > 0 -%}
+          <li><a class="cat-chip" href="{{ '/' | append: category.id | append: '/' | relative_url }}"><span class="cat-chip-name">{{ category.name }}</span><span class="cat-chip-desc">{{ category.description }}</span><span class="cat-chip-count">{{ cc_posts.size }}</span></a></li>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+  </section>
+</div>

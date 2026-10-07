@@ -1,0 +1,64 @@
+# ============================================================
+#  Червепедия — настройки сайта
+# ============================================================
+title: "Червепедия"
+tagline: "Энциклопедия Черветреда"
+description: "Червепедия — энциклопедия Черветреда: статьи о людях, событиях, мемах и истории треда."
+lang: ru
+locale: ru_RU
+
+url: "https://cherwepedia.github.io"
+baseurl: ""
+timezone: Europe/Moscow
+encoding: utf-8
+
+# --- SEO / аналитика / соцсети -----------------------------
+og_image: /assets/img/og-default.png
+logo: /assets/img/logo.png
+telegram_channel: chervethreadoff          # канал с комментариями (виджет обсуждения под статьёй)
+yandex_verification: "54e3598f9a8e64fd"
+google_verification: "3NAKIaQ0Cr-nXA373L9pTVv0ofZs-Zi0QGk1-VVqv8M"
+yandex_metrika: 108510390
+
+# --- Поведение сайта ---------------------------------------
+# Рубрики, которые скрыты на сайте по умолчанию (главная, поиск, случайная статья).
+# Из поисковиков они НЕ скрываются: статьи индексируются и лежат в sitemap.xml.
+hidden_categories:
+  - политика
+
+home_latest: 8        # сколько последних статей на главной
+page_size: 20         # статей на одной странице списков (пагинация)
+related_limit: 6      # блок «См. также» под статьёй
+
+# --- Сборка -------------------------------------------------
+permalink: /:categories/:title/
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+
+collections:
+  cats:
+    output: true          # страницы рубрик (по файлу на рубрику в папке _cats)
+
+defaults:
+  - scope: { path: "", type: "posts" }
+    values: { layout: "post" }
+  - scope: { path: "", type: "cats" }
+    values: { layout: "category" }
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - package.json
+  - package-lock.json
+  - node_modules
+  - tools
+  - vendor
+  - .github
+
+# Плагины не нужны: sitemap.xml, feed.xml, поиск и пагинация сделаны своими средствами,
+# поэтому сайт собирается стандартным GitHub Pages без сюрпризов.
+plugins: []

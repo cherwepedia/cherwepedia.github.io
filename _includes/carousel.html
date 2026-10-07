@@ -1,0 +1,17 @@
+{%- comment -%}
+  Слайдер фотографий в статье (справа от текста, как врезка в Википедии).
+  {% include carousel.html images="a.jpg,b.jpg" captions="Подпись 1|Подпись 2" %}
+  Подписи можно разделять запятой или «|» (если в подписях есть запятые).
+{%- endcomment -%}
+{%- assign cr_images = include.images | split: ',' -%}
+{%- include captions.html captions=include.captions count=cr_images.size -%}
+{%- assign cr_align = include.align | default: 'right' -%}
+<figure class="thumb thumb-{{ cr_align }} carousel" data-carousel{% if include.width %} style="--thumb-w:{{ include.width }}px"{% endif %}><div class="carousel-viewport"><ul class="carousel-track">
+{%- for cr_img in cr_images -%}
+{%- assign cr_src = cr_img | strip -%}
+{%- unless cr_src contains '://' -%}{%- assign cr_src = cr_src | relative_url -%}{%- endunless -%}
+{%- assign cr_cap = caption_list[forloop.index0] -%}
+<li class="carousel-slide"><img src="{{ cr_src }}" alt="{{ cr_cap | default: page.title | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox{% if cr_cap %} data-caption="{{ cr_cap | escape }}"{% endif %}></li>
+{%- endfor -%}
+</ul><button class="carousel-btn carousel-prev" type="button" aria-label="Предыдущее фото" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><button class="carousel-btn carousel-next" type="button" aria-label="Следующее фото" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div><figcaption><span class="carousel-caption">{{ caption_list[0] | escape }}</span>{% if cr_images.size > 1 %} <span class="carousel-count">1 / {{ cr_images.size }}</span>{% endif %}</figcaption></figure>
+

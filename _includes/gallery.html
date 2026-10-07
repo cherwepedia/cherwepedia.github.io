@@ -1,0 +1,15 @@
+{%- comment -%}
+  Галерея миниатюр на всю ширину статьи.
+  {% include gallery.html images="a.jpg,b.jpg,c.jpg" captions="А|Б|В" columns="3" title="Фотографии" %}
+{%- endcomment -%}
+{%- assign g_images = include.images | split: ',' -%}
+{%- include captions.html captions=include.captions count=g_images.size -%}
+<div class="gallery-block">{% if include.title %}<p class="gallery-title">{{ include.title | escape }}</p>{% endif %}<ul class="gallery" style="--cols:{{ include.columns | default: 3 }}">
+{%- for g_img in g_images -%}
+{%- assign g_src = g_img | strip -%}
+{%- unless g_src contains '://' -%}{%- assign g_src = g_src | relative_url -%}{%- endunless -%}
+{%- assign g_cap = caption_list[forloop.index0] -%}
+<li><figure><img src="{{ g_src }}" alt="{{ g_cap | default: page.title | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox{% if g_cap %} data-caption="{{ g_cap | escape }}"{% endif %}>{% if g_cap %}<figcaption>{{ g_cap | escape }}</figcaption>{% endif %}</figure></li>
+{%- endfor -%}
+</ul></div>
+

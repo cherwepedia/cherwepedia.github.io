@@ -1,0 +1,15 @@
+{%- comment -%}
+  Использование: {% include plain-text.html text=post.intro length=170 %}  (html=true — если text уже HTML, а не markdown)
+  Результат — переменная plain_text: чистый текст без разметки (выводить через | escape).
+{%- endcomment -%}
+{%- if include.html -%}
+  {%- assign plain_text = include.text | strip_html -%}
+{%- else -%}
+  {%- assign plain_text = include.text | markdownify | strip_html -%}
+{%- endif -%}
+{%- assign plain_text = plain_text | strip_newlines | normalize_whitespace
+    | replace: '&ldquo;', '“' | replace: '&rdquo;', '”' | replace: '&lsquo;', '‘' | replace: '&rsquo;', '’'
+    | replace: '&laquo;', '«' | replace: '&raquo;', '»' | replace: '&hellip;', '…' | replace: '&ndash;', '–'
+    | replace: '&mdash;', '—' | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'"
+    | replace: '&amp;', '&' | strip -%}
+{%- if include.length -%}{%- assign plain_text = plain_text | truncate: include.length -%}{%- endif -%}

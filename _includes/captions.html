@@ -1,0 +1,25 @@
+{%- comment -%}
+  Разбор подписей для carousel/gallery. Использование: {% include captions.html captions="а,б,в" count=3 %}
+  Результат — переменная caption_list (массив).
+  Разделитель — «|», если он есть в строке, иначе запятая. Если запятых больше, чем фото, то куски,
+  начинающиеся со строчной буквы, приклеиваются к предыдущей подписи (так «Бригада, которая убивала…» остаётся целой).
+{%- endcomment -%}
+{%- assign cap_sep = ',' -%}
+{%- if include.captions contains '|' -%}{%- assign cap_sep = '|' -%}{%- endif -%}
+{%- assign cap_parts = include.captions | split: cap_sep -%}
+{%- assign cap_merge = false -%}
+{%- if cap_sep == ',' and cap_parts.size > include.count -%}{%- assign cap_merge = true -%}{%- endif -%}
+{%- assign cap_joined = '' -%}
+{%- for cap_part in cap_parts -%}
+  {%- assign cap_p = cap_part | strip -%}
+  {%- assign cap_ch = cap_p | slice: 0 -%}
+  {%- assign cap_up = cap_ch | upcase -%}
+  {%- if forloop.first -%}
+    {%- assign cap_joined = cap_p -%}
+  {%- elsif cap_merge and cap_ch != cap_up -%}
+    {%- assign cap_joined = cap_joined | append: ', ' | append: cap_p -%}
+  {%- else -%}
+    {%- assign cap_joined = cap_joined | append: '¦' | append: cap_p -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign caption_list = cap_joined | split: '¦' -%}

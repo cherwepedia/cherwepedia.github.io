@@ -1,0 +1,28 @@
+---
+layout: default
+title: Поиск
+permalink: /search/
+noindex: true
+---
+<div class="page-wrap">
+  <header class="page-header"><h1 class="page-title">Поиск по энциклопедии</h1></header>
+  <form class="search search--hero" role="search" action="{{ '/search/' | relative_url }}" method="get" data-search-page-form>
+    <input class="search-input" type="search" name="q" placeholder="Введите запрос" aria-label="Поисковый запрос" autocomplete="off" spellcheck="false" enterkeyhint="search" data-search-page-input>
+    <button class="search-btn" type="submit" aria-label="Найти">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+  </form>
+  <div class="list-toolbar">
+    <p class="list-count" data-search-status aria-live="polite"></p>
+    {%- if site.hidden_categories.size > 0 %}
+    <label class="switch" data-politics-switch>
+      <input type="checkbox" data-politics-toggle>
+      <span class="switch-ui" aria-hidden="true"></span>
+      <span class="switch-text">Искать и в скрытых рубриках</span>
+    </label>
+    {%- endif %}
+  </div>
+  <ol class="entry-list" data-search-results></ol>
+  <nav class="pager" data-pager aria-label="Страницы" hidden></nav>
+  <noscript><p class="notice">Для поиска нужен включённый JavaScript. Перейдите в <a href="{{ '/articles/' | relative_url }}">список всех статей</a>.</p></noscript>
+</div>

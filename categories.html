@@ -1,0 +1,54 @@
+---
+layout: default
+title: Категории
+permalink: /categories/
+description: "Рубрики Червепедии: навигация по статьям энциклопедии Черветреда."
+---
+{%- assign hidden_names = '' -%}
+{%- for hc in site.hidden_categories -%}
+  {%- assign hc_obj = site.data.categories | where: 'id', hc | first -%}
+  {%- if hidden_names != '' -%}{%- assign hidden_names = hidden_names | append: ', ' -%}{%- endif -%}
+  {%- assign hc_name = hc_obj.name | default: hc -%}
+  {%- assign hidden_names = hidden_names | append: hc_name -%}
+{%- endfor -%}
+<div class="page-wrap">
+  <nav class="breadcrumbs" aria-label="Навигация">
+    <ol><li><a href="{{ '/' | relative_url }}">Главная</a></li><li aria-current="page"><span>Категории</span></li></ol>
+  </nav>
+  <header class="page-header">
+    <h1 class="page-title">Категории</h1>
+      </header>
+
+  {%- if site.hidden_categories.size > 0 %}
+  <label class="switch" data-politics-switch>
+    <input type="checkbox" data-politics-toggle>
+    <span class="switch-ui" aria-hidden="true"></span>
+    <span class="switch-text">Показывать скрытые рубрики: {{ hidden_names }}</span>
+  </label>
+  {%- endif %}
+
+  <div class="cat-sections">
+    {%- for category in site.data.categories %}
+    {%- assign posts = site.posts | where_exp: 'p', 'p.categories contains category.id' -%}
+    {%- assign is_hid = false -%}
+    {%- if site.hidden_categories contains category.id -%}{%- assign is_hid = true -%}{%- endif -%}
+    {%- if posts.size > 0 %}
+    <section class="cat-card" id="{{ category.id }}"{% if is_hid %} data-hidden-cat{% endif %}>
+      <header class="cat-card-head">
+        <h2 class="cat-card-title"><a href="{{ '/' | append: category.id | append: '/' | relative_url }}">{{ category.name }}</a> <span class="cat-card-count">{{ posts.size }}</span></h2>
+        {%- if category.description %}<p class="cat-card-desc">{{ category.description }}</p>{% endif %}
+      </header>
+      <ul class="cat-card-list">
+        {%- for p in posts limit: 10 %}
+        <li><a href="{{ p.url | relative_url }}">{{ p.title | escape }}</a></li>
+        {%- endfor %}
+      </ul>
+      {%- if posts.size > 10 %}
+      <p class="cat-card-more"><a href="{{ '/' | append: category.id | append: '/' | relative_url }}">Все статьи рубрики ({{ posts.size }}) →</a></p>
+      {%- endif %}
+    </section>
+    {%- endif %}
+    {%- endfor %}
+  </div>
+  <noscript><style>[data-hidden-cat]{display:block!important}</style></noscript>
+</div>

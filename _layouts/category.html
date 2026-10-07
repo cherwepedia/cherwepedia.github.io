@@ -1,0 +1,37 @@
+---
+layout: default
+---
+{%- assign cid = page.category_id -%}
+{%- assign cat = site.data.categories | where: 'id', cid | first -%}
+{%- assign cat_posts = site.posts | where_exp: 'p', 'p.categories contains cid' -%}
+<div class="page-wrap">
+  <nav class="breadcrumbs" aria-label="Навигация">
+    <ol>
+      <li><a href="{{ '/' | relative_url }}">Главная</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}">Категории</a></li>
+      <li aria-current="page"><span>{{ cat.name | default: cid }}</span></li>
+    </ol>
+  </nav>
+  <header class="page-header">
+    <h1 class="page-title">{{ page.title | escape }}</h1>
+    {%- if cat.description %}<p class="page-lead">{{ cat.description | escape }}</p>{% endif %}
+  </header>
+
+  {%- if site.hidden_categories contains cid %}
+  <p class="notice">Эта рубрика скрыта на главной, в поиске и в «случайной статье». Включить её показ можно на странице <a href="{{ '/categories/' | relative_url }}">«Категории»</a>.</p>
+  {%- endif %}
+
+  {%- if cat_posts.size > 0 %}
+  <div class="list-toolbar">
+    <p class="list-count">Статей в рубрике: <strong>{{ cat_posts.size }}</strong></p>
+  </div>
+  <ol class="entry-list" data-paginate>
+    {%- for p in cat_posts %}
+    {% include article-item.html post=p %}
+    {%- endfor %}
+  </ol>
+  <nav class="pager" data-pager aria-label="Страницы" hidden></nav>
+  {%- else %}
+  <p class="empty">В этой рубрике пока нет статей.</p>
+  {%- endif %}
+</div>

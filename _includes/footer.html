@@ -1,0 +1,21 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="{{ '/assets/img/logo.png' | relative_url }}" alt="" width="28" height="28" loading="lazy" decoding="async" class="brand-logo">
+      <div>
+        <strong>{{ site.title }}</strong>
+        <p>{{ site.tagline }}</p>
+      </div>
+    </div>
+    <nav class="footer-links" aria-label="Разделы сайта">
+      <a href="{{ '/' | relative_url }}">Главная</a>
+      <a href="{{ '/categories/' | relative_url }}">Категории</a>
+      <a href="{{ '/articles/' | relative_url }}">Все статьи</a>
+      <a href="{{ '/random/' | relative_url }}" data-random>Случайная статья</a>
+      <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+      <a href="{{ '/sitemap.xml' | relative_url }}">Карта сайта</a>
+      {% if site.telegram_channel %}<a href="https://t.me/{{ site.telegram_channel }}" rel="noopener">Telegram</a>{% endif %}
+    </nav>
+    <p class="footer-note">&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Все материалы взяты из открытых источников.</p>
+  </div>
+</footer>

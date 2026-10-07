@@ -1,0 +1,10 @@
+{%- comment -%}
+  Картинка с подписью, как в Википедии (справа от текста).
+  {% include card.html image="https://…/photo.jpg" caption="Подпись" %}
+  Необязательно: align="left|right|center", width="260" (px), alt="описание".
+{%- endcomment -%}
+{%- assign c_src = include.image | strip -%}
+{%- unless c_src contains '://' -%}{%- assign c_src = c_src | relative_url -%}{%- endunless -%}
+{%- assign c_align = include.align | default: 'right' -%}
+<figure class="thumb thumb-{{ c_align }}"{% if include.width %} style="--thumb-w:{{ include.width }}px"{% endif %}><img src="{{ c_src }}" alt="{{ include.alt | default: include.caption | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox>{% if include.caption %}<figcaption>{{ include.caption | escape }}</figcaption>{% endif %}</figure>
+

@@ -1,0 +1,25 @@
+{%- comment -%} Строка списка статей. Использование: {% include article-item.html post=post %} {%- endcomment -%}
+{%- assign ai_post = include.post -%}
+{%- include post-hidden.html post=ai_post -%}
+{%- assign ai_hidden = post_hidden -%}
+{%- assign ai_cat_id = ai_post.categories | first -%}
+{%- assign ai_cat = site.data.categories | where: 'id', ai_cat_id | first -%}
+{%- assign ai_text = ai_post.intro | default: ai_post.excerpt -%}
+{%- include plain-text.html text=ai_text length=190 -%}
+<li class="entry" data-hidden="{% if ai_hidden %}1{% else %}0{% endif %}" data-title="{{ ai_post.title | downcase | escape }}" data-date="{{ ai_post.date | date: '%Y%m%d' }}">
+  <a class="entry-thumb{% unless ai_post.infobox.image %} entry-thumb--empty{% endunless %}" href="{{ ai_post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+    {%- if ai_post.infobox.image -%}
+    <img src="{{ ai_post.infobox.image }}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('entry-thumb--empty');this.remove()">
+    {%- else -%}
+    <span>{{ ai_post.title | slice: 0 }}</span>
+    {%- endif -%}
+  </a>
+  <div class="entry-body">
+    <h3 class="entry-title"><a href="{{ ai_post.url | relative_url }}">{{ ai_post.title | escape }}</a></h3>
+    <p class="entry-text">{{ plain_text | escape }}</p>
+    <p class="entry-meta">
+      {%- if ai_cat %}<a href="{{ '/' | append: ai_cat.id | append: '/' | relative_url }}">{{ ai_cat.name }}</a> · {% elsif ai_cat_id %}{{ ai_cat_id }} · {% endif -%}
+      <time datetime="{{ ai_post.date | date_to_xmlschema }}">{{ ai_post.date | date: '%d.%m.%Y' }}</time>
+    </p>
+  </div>
+</li>

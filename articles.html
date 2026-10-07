@@ -1,0 +1,41 @@
+---
+layout: default
+title: Все статьи
+permalink: /articles/
+description: "Полный список статей Червепедии — энциклопедии Черветреда: по дате и по алфавиту."
+---
+<div class="page-wrap">
+  <nav class="breadcrumbs" aria-label="Навигация">
+    <ol><li><a href="{{ '/' | relative_url }}">Главная</a></li><li aria-current="page"><span>Все статьи</span></li></ol>
+  </nav>
+  <header class="page-header">
+    <h1 class="page-title">Все статьи</h1>
+  </header>
+
+  <div class="list-toolbar">
+    <p class="list-count" data-list-count></p>
+    <div class="list-controls">
+      <label class="select-wrap">Сортировка:
+        <select data-sort aria-label="Сортировка">
+          <option value="date">Сначала новые</option>
+          <option value="title">По алфавиту</option>
+        </select>
+      </label>
+      {%- if site.hidden_categories.size > 0 %}
+      <label class="switch" data-politics-switch>
+        <input type="checkbox" data-politics-toggle>
+        <span class="switch-ui" aria-hidden="true"></span>
+        <span class="switch-text">Скрытые рубрики</span>
+      </label>
+      {%- endif %}
+    </div>
+  </div>
+
+  <ol class="entry-list" data-paginate data-sortable>
+    {%- for p in site.posts %}
+    {% include article-item.html post=p %}
+    {%- endfor %}
+  </ol>
+  <nav class="pager" data-pager aria-label="Страницы" hidden></nav>
+  <noscript><style>.entry[data-hidden="1"]{display:grid!important}</style></noscript>
+</div>

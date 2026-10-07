@@ -1,0 +1,123 @@
+---
+layout: default
+---
+{%- assign cat_id = page.categories | first -%}
+{%- assign cat = site.data.categories | where: 'id', cat_id | first -%}
+{%- comment -%} Внешние ссылки в тексте: rel="nofollow noopener", как в Википедии {%- endcomment -%}
+{%- assign body = content | replace: '<a href="http', '<a class="external" rel="nofollow noopener" href="http' -%}
+{%- assign own_ext = '<a class="external" rel="nofollow noopener" href="' | append: site.url -%}
+{%- assign own_int = '<a href="' | append: site.url -%}
+{%- assign body = body | replace: own_ext, own_int -%}
+<article class="article">
+  <nav class="breadcrumbs" aria-label="Навигация">
+    <ol>
+      <li><a href="{{ '/' | relative_url }}">Главная</a></li>
+      {%- if cat %}
+      <li><a href="{{ '/' | append: cat.id | append: '/' | relative_url }}">{{ cat.name }}</a></li>
+      {%- elsif cat_id %}
+      <li><span>{{ cat_id }}</span></li>
+      {%- endif %}
+      <li aria-current="page"><span>{{ page.title | escape }}</span></li>
+    </ol>
+  </nav>
+
+  <header class="article-header">
+    <h1 class="article-title">{{ page.title | escape }}</h1>
+    <p class="article-sub">Материал из {{ site.title }} — энциклопедии Черветреда</p>
+  </header>
+
+  <div class="article-layout">
+    <aside class="toc toc-side" data-toc-side hidden aria-label="Содержание">
+      <p class="toc-title">Содержание</p>
+      <nav></nav>
+    </aside>
+
+    <div class="article-main">
+      {%- if page.infobox %}
+      <aside class="infobox" aria-label="Краткие сведения">
+        <table class="infobox-table">
+          <caption class="infobox-title">{{ page.title | escape }}</caption>
+          {%- if page.infobox.image %}
+          <tr class="infobox-imagerow"><td colspan="2">
+            <figure class="infobox-image">
+              <img src="{{ page.infobox.image }}" alt="{{ page.infobox.image_alt | default: page.title | escape }}" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" data-lightbox{% if page.infobox.image_caption %} data-caption="{{ page.infobox.image_caption | escape }}"{% endif %} onerror="this.closest('.infobox-imagerow').remove()">
+              {%- if page.infobox.image_caption %}<figcaption>{{ page.infobox.image_caption | escape }}</figcaption>{% endif %}
+            </figure>
+          </td></tr>
+          {%- endif %}
+          {%- for item in page.infobox.data %}
+          <tr><th scope="row">{{ item.label | escape }}</th><td>{{ item.value | markdownify | remove: '<p>' | remove: '</p>' | strip }}</td></tr>
+          {%- endfor %}
+        </table>
+      </aside>
+      {%- endif %}
+
+      {%- if page.intro %}
+      <div class="article-lead">{{ page.intro | markdownify }}</div>
+      {%- endif %}
+
+      <details class="toc toc-inline" data-toc-inline open hidden>
+        <summary>Содержание</summary>
+        <nav></nav>
+      </details>
+
+      <div class="article-content" id="article-content">
+{{ body }}
+      </div>
+
+      {%- if page.gallery and page.gallery.size > 0 %}
+      <section class="article-gallery" aria-label="Галерея">
+        <h2 id="galereya">Галерея</h2>
+        <ul class="gallery" style="--cols:3">
+          {%- for g in page.gallery %}
+          {%- assign g_src = g.src | default: g.url | default: g.image -%}
+          <li><figure><img src="{{ g_src }}" alt="{{ g.caption | default: page.title | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox{% if g.caption %} data-caption="{{ g.caption | escape }}"{% endif %}>{% if g.caption %}<figcaption>{{ g.caption | escape }}</figcaption>{% endif %}</figure></li>
+          {%- endfor %}
+        </ul>
+      </section>
+      {%- endif %}
+
+      <footer class="article-footer">
+        <p class="article-cats"><span>Категории:</span>
+          {%- for c in page.categories %}
+          {%- assign c_obj = site.data.categories | where: 'id', c | first %}
+          {%- if c_obj %} <a class="chip" href="{{ '/' | append: c_obj.id | append: '/' | relative_url }}">{{ c_obj.name }}</a>{% else %} <span class="chip">{{ c }}</span>{% endif %}
+          {%- endfor %}
+        </p>
+        <p class="article-dates">
+          Опубликовано <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d.%m.%Y' }}</time>
+          {%- if page.last_modified_at %}, изменено <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: '%d.%m.%Y' }}</time>{% endif %}
+        </p>
+      </footer>
+
+      {%- comment -%} «См. также»: другие статьи той же рубрики — внутренняя перелинковка {%- endcomment -%}
+      {%- if cat_id %}
+      {%- assign related_all = site.posts | where_exp: 'rp', 'rp.categories contains cat_id' -%}
+      {%- assign related_n = 0 -%}
+      {%- capture related_html -%}
+        {%- for rp in related_all -%}
+          {%- if rp.url != page.url and related_n < site.related_limit -%}
+            {%- assign related_n = related_n | plus: 1 -%}
+            {%- include article-item.html post=rp -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if related_n > 0 %}
+      <section class="related" aria-labelledby="related-title">
+        <h2 id="related-title">См. также</h2>
+        <ol class="entry-list entry-list--compact">{{ related_html }}</ol>
+      </section>
+      {%- endif %}
+      {%- endif %}
+
+      {%- if site.telegram_channel and page.comments != false %}
+      <section class="comments" id="comments" aria-labelledby="comments-title">
+        <h2 id="comments-title">Обсуждение</h2>
+        <div class="comments-box" data-comments data-channel="{{ site.telegram_channel }}{% if page.telegram_post %}/{{ page.telegram_post }}{% endif %}">
+          <button class="btn" type="button" data-comments-load>Показать комментарии из Telegram</button>
+        </div>
+      </section>
+      {%- endif %}
+    </div>
+  </div>
+</article>

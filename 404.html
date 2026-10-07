@@ -1,0 +1,24 @@
+---
+layout: default
+title: Страница не найдена
+permalink: /404.html
+noindex: true
+---
+<div class="page-wrap page-404">
+  <header class="page-header">
+    <p class="err-code">404</p>
+    <h1 class="page-title">Такой статьи пока нет</h1>
+    <p class="page-lead">Возможно, адрес изменился или в нём опечатка. Попробуйте найти нужную статью поиском.</p>
+  </header>
+  <form class="search search--hero" role="search" action="{{ '/search/' | relative_url }}" method="get">
+    <input class="search-input" type="search" name="q" placeholder="Поиск по энциклопедии" aria-label="Поиск по энциклопедии" autocomplete="off">
+    <button class="search-btn" type="submit" aria-label="Найти">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+  </form>
+  <div class="home-actions">
+    <a class="btn btn-primary" href="{{ '/' | relative_url }}">На главную</a>
+    <a class="btn" href="{{ '/categories/' | relative_url }}">Категории</a>
+    <a class="btn" href="{{ '/random/' | relative_url }}" data-random>Случайная статья</a>
+  </div>
+</div>

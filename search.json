@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /search.json
+---
+[
+{%- for p in site.posts -%}
+{%- include post-hidden.html post=p -%}
+{%- assign sj_body = p.content | replace: '<', ' <' | strip_html | slice: 0, 9000 -%}
+{%- include plain-text.html text=sj_body html=true length=3000 -%}
+{%- assign sj_body_plain = plain_text -%}
+{%- assign sj_intro_text = p.intro | default: p.excerpt -%}
+{%- include plain-text.html text=sj_intro_text length=220 -%}
+{%- assign sj_cat_id = p.categories | first -%}
+{%- assign sj_cat = site.data.categories | where: 'id', sj_cat_id | first %}
+{"t":{{ p.title | jsonify }},"u":{{ p.url | relative_url | jsonify }},"i":{{ plain_text | jsonify }},"x":{{ sj_body_plain | jsonify }},"c":{{ sj_cat_id | default: '' | jsonify }},"n":{{ sj_cat.name | default: sj_cat_id | default: '' | jsonify }},"m":{{ p.infobox.image | default: '' | jsonify }},"d":{{ p.date | date: '%Y%m%d' | jsonify }},"h":{% if post_hidden %}1{% else %}0{% endif %},"a":{{ p.aliases | default: empty_array | jsonify }}}{% unless forloop.last %},{% endunless %}
+{%- endfor %}
+]

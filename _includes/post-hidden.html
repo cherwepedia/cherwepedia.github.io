@@ -1,0 +1,5 @@
+{%- comment -%} Использование: {% include post-hidden.html post=post %} → переменная post_hidden (true, если рубрика скрыта) {%- endcomment -%}
+{%- assign post_hidden = false -%}
+{%- for ph_cat in include.post.categories -%}
+  {%- if site.hidden_categories contains ph_cat -%}{%- assign post_hidden = true -%}{%- endif -%}
+{%- endfor -%}
