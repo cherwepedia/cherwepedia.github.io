@@ -3,7 +3,6 @@ permalink: /robots.txt
 ---
 User-agent: *
 Allow: /
-Disallow: /search/
 Disallow: /random/
 Disallow: /search.json
 
