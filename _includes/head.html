@@ -11,11 +11,11 @@
 {%- if page.seo_title -%}
   {%- assign seo_title = page.seo_title -%}
 {%- elsif is_home -%}
-  {%- assign seo_title = site.title | append: ' вЂ” ' | append: site.tagline -%}
+  {%- assign seo_title = site.title | append: ' — ' | append: site.tagline -%}
 {%- elsif page.title -%}
-  {%- assign seo_title = page.title | append: ' вЂ” ' | append: site.title -%}
+  {%- assign seo_title = page.title | append: ' — ' | append: site.title -%}
 {%- else -%}
-  {%- assign seo_title = site.title -%}
+  {%- assign seo_title = site.title | append: ' — ' | append: site.tagline -%}
 {%- endif -%}
 
 {%- comment -%} --- РћРїРёСЃР°РЅРёРµ (С‡РёСЃС‚С‹Р№ С‚РµРєСЃС‚ Р±РµР· СЂР°Р·РјРµС‚РєРё Рё СЃСѓС‰РЅРѕСЃС‚РµР№) --- {%- endcomment -%}
@@ -193,4 +193,6 @@
   ]
 }
 </script>
+
+
 
