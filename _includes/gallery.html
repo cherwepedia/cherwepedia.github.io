@@ -9,7 +9,7 @@
 {%- assign g_src = g_img | strip -%}
 {%- unless g_src contains '://' -%}{%- assign g_src = g_src | relative_url -%}{%- endunless -%}
 {%- assign g_cap = caption_list[forloop.index0] -%}
-<li><figure><img src="{{ g_src }}" alt="{{ g_cap | default: page.title | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox{% if g_cap %} data-caption="{{ g_cap | escape }}"{% endif %}>{% if g_cap %}<figcaption>{{ g_cap | escape }}</figcaption>{% endif %}</figure></li>
+<li><figure><img src="{{ g_src }}" alt="{{ g_cap | default: page.title | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox{% if g_cap %} data-caption="{{ g_cap | escape }}"{% endif %}>{% if g_cap %}<figcaption class="cap"><span class="cap-box"><span class="cap-text">{{ g_cap | escape }}</span></span></figcaption>{% endif %}</figure></li>
 {%- endfor -%}
 </ul></div>
 

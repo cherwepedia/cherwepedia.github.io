@@ -33,7 +33,8 @@ description: "Рубрики Червепедии: навигация по ст�
     {%- assign is_hid = false -%}
     {%- if site.hidden_categories contains category.id -%}{%- assign is_hid = true -%}{%- endif -%}
     {%- if posts.size > 0 %}
-    <section class="cat-card" id="{{ category.id }}"{% if is_hid %} data-hidden-cat{% endif %}>
+    {%- include cat-hue.html id=category.id %}
+    <section class="cat-card has-cat" style="--h:{{ cat_hue }}" id="{{ category.id }}"{% if is_hid %} data-hidden-cat{% endif %}>
       <header class="cat-card-head">
         <h2 class="cat-card-title"><a href="{{ '/' | append: category.id | append: '/' | relative_url }}">{{ category.name }}</a> <span class="cat-card-count">{{ posts.size }}</span></h2>
         {%- if category.description %}<p class="cat-card-desc">{{ category.description }}</p>{% endif %}

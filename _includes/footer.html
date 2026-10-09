@@ -14,6 +14,7 @@
       <a href="{{ '/random/' | relative_url }}" data-random>Случайная статья</a>
       <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
       <a href="{{ '/sitemap.xml' | relative_url }}">Карта сайта</a>
+      <button class="fx-toggle" type="button" data-fx-toggle hidden></button>
       {% if site.telegram_channel %}<a href="https://t.me/{{ site.telegram_channel }}" rel="noopener">Telegram</a>{% endif %}
     </nav>
     <p class="footer-note">&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Все материалы взяты из открытых источников.</p>

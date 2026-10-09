@@ -1,13 +1,13 @@
-﻿{%- comment -%}
-  SEO-Р±Р»РѕРє Рё РІСЃС‘, С‡С‚Рѕ РёРґС‘С‚ РІ <head>. РџРѕРґРєР»СЋС‡Р°РµС‚СЃСЏ РёР· _layouts/default.html.
-  РџРµСЂРµРѕРїСЂРµРґРµР»РµРЅРёСЏ РЅР° СЃС‚СЂР°РЅРёС†Рµ (front matter): seo_title, description, noindex: true, image.
+{%- comment -%}
+  SEO-блок и всё, что идёт в <head>. Подключается из _layouts/default.html.
+  Переопределения на странице (front matter): seo_title, description, noindex: true, image.
 {%- endcomment -%}
 {%- assign is_post = false -%}
 {%- if page.layout == 'post' -%}{%- assign is_post = true -%}{%- endif -%}
 {%- assign is_home = false -%}
 {%- if page.url == '/' -%}{%- assign is_home = true -%}{%- endif -%}
 
-{%- comment -%} --- Р—Р°РіРѕР»РѕРІРѕРє --- {%- endcomment -%}
+{%- comment -%} --- Заголовок --- {%- endcomment -%}
 {%- if page.seo_title -%}
   {%- assign seo_title = page.seo_title -%}
 {%- elsif is_home -%}
@@ -18,7 +18,7 @@
   {%- assign seo_title = site.title | append: ' — ' | append: site.tagline -%}
 {%- endif -%}
 
-{%- comment -%} --- РћРїРёСЃР°РЅРёРµ (С‡РёСЃС‚С‹Р№ С‚РµРєСЃС‚ Р±РµР· СЂР°Р·РјРµС‚РєРё Рё СЃСѓС‰РЅРѕСЃС‚РµР№) --- {%- endcomment -%}
+{%- comment -%} --- Описание (чистый текст без разметки и сущностей) --- {%- endcomment -%}
 {%- assign d = page.description | default: page.intro -%}
 {%- if d == nil or d == '' -%}
   {%- if is_post -%}
@@ -33,16 +33,16 @@
   {%- assign seo_desc = d | markdownify | strip_html -%}
 {%- endif -%}
 {%- assign seo_desc = seo_desc | strip_newlines | normalize_whitespace
-    | replace: '&ldquo;', 'вЂњ' | replace: '&rdquo;', 'вЂќ' | replace: '&lsquo;', 'вЂ' | replace: '&rsquo;', 'вЂ™'
-    | replace: '&laquo;', 'В«' | replace: '&raquo;', 'В»' | replace: '&hellip;', 'вЂ¦' | replace: '&ndash;', 'вЂ“'
-    | replace: '&mdash;', 'вЂ”' | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'"
+    | replace: '&ldquo;', '“' | replace: '&rdquo;', '”' | replace: '&lsquo;', '‘' | replace: '&rsquo;', '’'
+    | replace: '&laquo;', '«' | replace: '&raquo;', '»' | replace: '&hellip;', '…' | replace: '&ndash;', '–'
+    | replace: '&mdash;', '—' | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'"
     | replace: '&amp;', '&' | strip | truncate: 200 -%}
 
-{%- comment -%} --- РђРґСЂРµСЃ --- {%- endcomment -%}
+{%- comment -%} --- Адрес --- {%- endcomment -%}
 {%- assign canon_path = page.url | replace: 'index.html', '' -%}
 {%- assign seo_url = canon_path | absolute_url | uri_escape -%}
 
-{%- comment -%} --- РљР°СЂС‚РёРЅРєР° РґР»СЏ СЃРѕС†СЃРµС‚РµР№ Рё СЃРЅРёРїРїРµС‚Р° --- {%- endcomment -%}
+{%- comment -%} --- Картинка для соцсетей и сниппета --- {%- endcomment -%}
 {%- assign seo_image = page.image | default: page.infobox.image | default: site.og_image -%}
 {%- if seo_image contains '://' -%}
   {%- assign seo_image_url = seo_image -%}
@@ -77,8 +77,8 @@
 {%- endif %}
 <link rel="canonical" href="{{ seo_url }}">
 <link rel="alternate" hreflang="ru" href="{{ seo_url }}">
-<link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }} вЂ” РЅРѕРІС‹Рµ СЃС‚Р°С‚СЊРё" href="{{ '/feed.xml' | relative_url }}">
-<link rel="sitemap" type="application/xml" title="РљР°СЂС‚Р° СЃР°Р№С‚Р°" href="{{ '/sitemap.xml' | relative_url }}">
+<link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }} — новые статьи" href="{{ '/feed.xml' | relative_url }}">
+<link rel="sitemap" type="application/xml" title="Карта сайта" href="{{ '/sitemap.xml' | relative_url }}">
 <meta name="application-name" content="{{ site.title | escape }}">
 <meta name="apple-mobile-web-app-title" content="{{ site.title | escape }}">
 <meta name="format-detection" content="telephone=no">
@@ -88,7 +88,7 @@
 {% if site.yandex_verification %}<meta name="yandex-verification" content="{{ site.yandex_verification }}">{% endif %}
 {% if site.google_verification %}<meta name="google-site-verification" content="{{ site.google_verification }}">{% endif %}
 
-<!-- Open Graph / Twitter (С‚Р°РєР¶Рµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РЇРЅРґРµРєСЃРѕРј, Telegram, VK) -->
+<!-- Open Graph / Twitter (также используются Яндексом, Telegram, VK) -->
 <meta property="og:site_name" content="{{ site.title | escape }}">
 <meta property="og:locale" content="{{ site.locale }}">
 <meta property="og:type" content="{% if is_post %}article{% else %}website{% endif %}">
@@ -109,21 +109,21 @@
 <meta name="twitter:description" content="{{ seo_desc | escape }}">
 <meta name="twitter:image" content="{{ seo_image_url }}">
 
-<!-- РРєРѕРЅРєРё -->
+<!-- Иконки -->
 <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ '/favicon-32x32.png' | relative_url }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ '/favicon-16x16.png' | relative_url }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ '/apple-touch-icon.png' | relative_url }}">
 <link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
 
-<!-- РўРµРјР°: СЃС‚Р°РІРёРј РґРѕ РѕС‚СЂРёСЃРѕРІРєРё, С‡С‚РѕР±С‹ РЅРµ Р±С‹Р»Рѕ В«РІСЃРїС‹С€РєРёВ» -->
+<!-- Тема: ставим до отрисовки, чтобы не было «вспышки» -->
 <script>
 (function(){try{var t=localStorage.getItem('cw:theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.add('js');if(localStorage.getItem('cw:hidden')==='1')document.documentElement.classList.add('show-hidden');}catch(e){}})();
 </script>
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}">
 {% if is_post and page.infobox.image %}<link rel="preload" as="image" href="{{ page.infobox.image }}" fetchpriority="high">{% endif %}
 
-<!-- РЎС‚СЂСѓРєС‚СѓСЂРёСЂРѕРІР°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ (schema.org) -->
+<!-- Структурированные данные (schema.org) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -141,7 +141,7 @@
       "@id": {{ web_id | jsonify }},
       "url": {{ site.url | append: '/' | jsonify }},
       "name": {{ site.title | jsonify }},
-      "alternateName": ["Cherwepedia", "Р§РµСЂРІРµРїРµРґРёСЏ вЂ” СЌРЅС†РёРєР»РѕРїРµРґРёСЏ Р§РµСЂРІРµС‚СЂРµРґР°"],
+      "alternateName": ["Cherwepedia", "Червепедия — энциклопедия Черветреда"],
       "description": {{ site.description | jsonify }},
       "inLanguage": "ru",
       "publisher": { "@id": {{ org_id | jsonify }} },
@@ -182,7 +182,7 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Р“Р»Р°РІРЅР°СЏ", "item": {{ site.url | append: '/' | jsonify }} }{% if is_post or page.layout == 'category' %}{% if is_post and cat_obj %},
+        { "@type": "ListItem", "position": 1, "name": "Главная", "item": {{ site.url | append: '/' | jsonify }} }{% if is_post or page.layout == 'category' %}{% if is_post and cat_obj %},
         { "@type": "ListItem", "position": 2, "name": {{ cat_obj.name | jsonify }}, "item": {{ '/' | append: cat_obj.id | append: '/' | absolute_url | uri_escape | jsonify }} },
         { "@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }} }{% elsif is_post %},
         { "@type": "ListItem", "position": 2, "name": {{ page.title | jsonify }} }{% else %},
@@ -193,6 +193,3 @@
   ]
 }
 </script>
-
-
-

@@ -15,6 +15,10 @@ encoding: utf-8
 # --- SEO / аналитика / соцсети -----------------------------
 og_image: /assets/img/og-default.png
 logo: /assets/img/logo.png
+# Анонимные комментарии без регистрации (бесплатный Cusdis): зарегистрируйте сайт на cusdis.com,
+# вставьте сюда App ID — и под статьями вместо Telegram появятся эти комментарии.
+cusdis_app_id: ""
+seasonal_effects: true                     # осенние листья / зимний снег и гирлянды (false — выключить)
 telegram_channel: chervethreadoff          # канал с комментариями (виджет обсуждения под статьёй)
 yandex_verification: "54e3598f9a8e64fd"
 google_verification: "3NAKIaQ0Cr-nXA373L9pTVv0ofZs-Zi0QGk1-VVqv8M"

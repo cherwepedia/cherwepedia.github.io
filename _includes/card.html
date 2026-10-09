@@ -6,5 +6,5 @@
 {%- assign c_src = include.image | strip -%}
 {%- unless c_src contains '://' -%}{%- assign c_src = c_src | relative_url -%}{%- endunless -%}
 {%- assign c_align = include.align | default: 'right' -%}
-<figure class="thumb thumb-{{ c_align }}"{% if include.width %} style="--thumb-w:{{ include.width }}px"{% endif %}><img src="{{ c_src }}" alt="{{ include.alt | default: include.caption | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox>{% if include.caption %}<figcaption>{{ include.caption | escape }}</figcaption>{% endif %}</figure>
+<figure class="thumb thumb-{{ c_align }}"{% if include.width %} style="--thumb-w:{{ include.width }}px"{% endif %}><img src="{{ c_src }}" alt="{{ include.alt | default: include.caption | escape }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-lightbox>{% if include.caption %}<figcaption class="cap"><span class="cap-box"><span class="cap-text">{{ include.caption | escape }}</span></span></figcaption>{% endif %}</figure>
 

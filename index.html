@@ -10,7 +10,7 @@ description: "Червепедия — энциклопедия Черветре
   {%- unless post_hidden -%}{%- assign visible_count = visible_count | plus: 1 -%}{%- endunless -%}
 {%- endfor -%}
 <div class="home">
-  <section class="home-hero">
+  <section class="home-hero" data-hero>
     <h1 class="home-title">{{ site.title }} — энциклопедия Черветреда</h1>
     <p class="home-sub">Свободно читаемая энциклопедия о Черветреде.{% if visible_count > 0 %} Сейчас в ней <strong>{{ visible_count }}</strong> {% assign m10 = visible_count | modulo: 10 %}{% assign m100 = visible_count | modulo: 100 %}{% if m10 == 1 and m100 != 11 %}статья{% elsif m10 >= 2 and m10 <= 4 and m100 != 12 and m100 != 13 and m100 != 14 %}статьи{% else %}статей{% endif %}.{% endif %}</p>
     <form class="search search--hero" role="search" action="{{ '/search/' | relative_url }}" method="get" data-search-form>
@@ -53,7 +53,7 @@ description: "Червепедия — энциклопедия Черветре
     <aside class="panel panel-random" aria-labelledby="random-title">
       <div class="panel-head">
         <h2 id="random-title">Случайные статьи</h2>
-        <button class="panel-link panel-btn" type="button" data-random-reroll hidden>Другие ↻</button>
+        <button class="panel-link panel-btn" type="button" data-random-reroll hidden>Другие <span class="rot" aria-hidden="true">↻</span></button>
       </div>
       <div class="random-cards is-pending" data-random-cards>
         {%- assign rnd_n = 0 -%}
@@ -84,7 +84,7 @@ description: "Червепедия — энциклопедия Черветре
         {%- unless site.hidden_categories contains category.id -%}
           {%- assign cc_posts = site.posts | where_exp: 'p', 'p.categories contains category.id' -%}
           {%- if cc_posts.size > 0 -%}
-          <li><a class="cat-chip" href="{{ '/' | append: category.id | append: '/' | relative_url }}"><span class="cat-chip-name">{{ category.name }}</span><span class="cat-chip-desc">{{ category.description }}</span><span class="cat-chip-count">{{ cc_posts.size }}</span></a></li>
+          {%- include cat-hue.html id=category.id -%}<li><a class="cat-chip has-cat" style="--h:{{ cat_hue }}" href="{{ '/' | append: category.id | append: '/' | relative_url }}"><span class="cat-chip-name">{{ category.name }}</span><span class="cat-chip-desc">{{ category.description }}</span><span class="cat-chip-count">{{ cc_posts.size }}</span></a></li>
           {%- endif -%}
         {%- endunless -%}
       {%- endfor -%}

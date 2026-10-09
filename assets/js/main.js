@@ -36,6 +36,7 @@
     root.setAttribute('data-theme', next);
     store('cw:theme', next);
     setTimeout(function () { root.classList.remove('theme-anim'); }, 350);
+    try { if (window.CUSDIS && window.CUSDIS.setTheme) window.CUSDIS.setTheme(next); } catch (e) { /* ignore */ }
   });
 
   /* ======================================================================
@@ -176,7 +177,10 @@
     loadIndex().then(function (list) {
       render(list);
       ready();
-      on(btn, 'click', function () { render(list); });
+      on(btn, 'click', function () {
+        render(list);
+        btn.classList.remove('is-spin'); void btn.offsetWidth; btn.classList.add('is-spin');
+      });
     }).catch(ready); // остаётся серверная подборка
   })();
 
@@ -498,13 +502,13 @@
           sub.appendChild(li);
         } else { ol.appendChild(li); lastLi = li; }
       });
+      var layout = $('.article-layout');
+      var wide = layout && layout.classList.contains('has-toc');
       [side, inline].forEach(function (box) {
         if (!box) return;
         $('nav', box).appendChild(ol.cloneNode(true));
-        box.hidden = false;
+        box.hidden = (box === side) && !wide;
       });
-      var layout = $('.article-layout');
-      if (layout) layout.classList.add('has-toc');
       if (inline && window.innerWidth < 720) inline.removeAttribute('open');
 
       // подсветка текущего раздела
@@ -517,7 +521,11 @@
             if (en.isIntersecting) {
               if (current) current.classList.remove('is-active');
               current = links[en.target.id] || null;
-              if (current) { current.classList.add('is-active'); }
+              if (current) {
+                current.classList.add('is-active');
+                var top = current.offsetTop - side.offsetTop, vh = side.clientHeight;
+                if (top < side.scrollTop + 40 || top > side.scrollTop + vh - 60) side.scrollTo({ top: Math.max(0, top - vh / 3), behavior: 'smooth' });
+              }
             }
           });
         }, { rootMargin: '-72px 0px -70% 0px', threshold: 0 });
@@ -576,6 +584,61 @@
       else add(birth.td, '(' + approx + years(age(birth.p, now)) + ')');
     }
   })();
+
+  /* ======================================================================
+     Галерея: если фото больше 6 — листаем страницами по 6
+     ====================================================================== */
+  $$('ul.gallery').forEach(function (ul) {
+    var items = $$(':scope > li', ul), PER = 6;
+    if (items.length <= PER) return;
+    var pages = Math.ceil(items.length / PER);
+    var wrap = doc.createElement('div'); wrap.className = 'gallery-pager';
+    var track = doc.createElement('div'); track.className = 'gallery-track';
+    var cols = ul.style.getPropertyValue('--cols');
+    for (var i = 0; i < pages; i++) {
+      var page = doc.createElement('ul'); page.className = 'gallery-page gallery';
+      if (cols) page.style.setProperty('--cols', cols);
+      items.slice(i * PER, (i + 1) * PER).forEach(function (li) { page.appendChild(li); });
+      track.appendChild(page);
+    }
+    var nav = doc.createElement('div'); nav.className = 'gallery-nav';
+    nav.innerHTML = '<button type="button" class="g-prev" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><span class="g-count"></span><button type="button" class="g-next" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></button>';
+    wrap.appendChild(track); wrap.appendChild(nav);
+    ul.parentNode.replaceChild(wrap, ul);
+    var prev = $('.g-prev', nav), next = $('.g-next', nav), cnt = $('.g-count', nav), idx = 0, ticking = false;
+    function update() {
+      idx = Math.max(0, Math.min(pages - 1, Math.round(track.scrollLeft / (track.clientWidth || 1))));
+      cnt.textContent = (idx + 1) + ' / ' + pages;
+      prev.disabled = idx === 0; next.disabled = idx === pages - 1;
+    }
+    function go(n) { track.scrollTo({ left: Math.max(0, Math.min(pages - 1, n)) * track.clientWidth, behavior: 'smooth' }); }
+    on(track, 'scroll', function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; update(); }); }, { passive: true });
+    on(prev, 'click', function () { go(idx - 1); });
+    on(next, 'click', function () { go(idx + 1); });
+    on(window, 'resize', function () { track.scrollLeft = idx * track.clientWidth; });
+    update();
+  });
+
+  /* ======================================================================
+     Подписи к картинкам: 2 строки, полный текст — по наведению
+     ====================================================================== */
+  var capBoxes = $$('.cap-box');
+  function checkCap(box) {
+    var t = $('.cap-text', box); if (!t) return;
+    var full = $('.cap-full', box);
+    if (!full) { full = doc.createElement('span'); full.className = 'cap-full'; box.appendChild(full); }
+    full.textContent = t.textContent;
+    box.classList.toggle('is-clamped', t.scrollHeight > t.clientHeight + 1);
+  }
+  function checkCaps() { capBoxes.forEach(checkCap); }
+  if (capBoxes.length) {
+    checkCaps();
+    on(window, 'resize', checkCaps);
+    on(window, 'load', checkCaps);
+    $$('.carousel-caption').forEach(function (c) {
+      if (window.MutationObserver) new MutationObserver(function () { checkCap(c.parentNode); }).observe(c, { childList: true, characterData: true, subtree: true });
+    });
+  }
 
   /* ======================================================================
      Слайдеры (carousel)
@@ -699,21 +762,29 @@
   })();
 
   /* ======================================================================
-     Комментарии Telegram — подгружаем лениво, когда блок приближается к экрану
+     Комментарии: Cusdis (анонимные, бесплатные) или Telegram — грузим лениво
      ====================================================================== */
   (function () {
-    var box = $('[data-comments]');
+    var box = $('[data-comments-cusdis]') || $('[data-comments]');
     if (!box) return;
+    var isCusdis = box.hasAttribute('data-comments-cusdis');
     var loaded = false;
     function load() {
       if (loaded) return; loaded = true;
       var btn = $('[data-comments-load]', box); if (btn) btn.remove();
+      var dark = root.getAttribute('data-theme') === 'dark';
       var s = doc.createElement('script');
       s.async = true;
-      s.src = 'https://telegram.org/js/telegram-widget.js?22';
-      s.setAttribute('data-telegram-discussion', box.getAttribute('data-channel'));
-      s.setAttribute('data-comments-limit', '8');
-      if (root.getAttribute('data-theme') === 'dark') s.setAttribute('data-dark', '1');
+      if (isCusdis) {
+        var th = $('#cusdis_thread', box);
+        if (th) th.setAttribute('data-theme', dark ? 'dark' : 'light');
+        s.src = 'https://cusdis.com/js/cusdis.es.js';
+      } else {
+        s.src = 'https://telegram.org/js/telegram-widget.js?22';
+        s.setAttribute('data-telegram-discussion', box.getAttribute('data-channel'));
+        s.setAttribute('data-comments-limit', '8');
+        if (dark) s.setAttribute('data-dark', '1');
+      }
       box.appendChild(s);
     }
     on($('[data-comments-load]', box), 'click', load);

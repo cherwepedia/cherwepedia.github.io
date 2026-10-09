@@ -1,0 +1,8 @@
+{%- comment -%}
+  Цвет рубрики: автоматически, по порядку в _data/categories.yml. Использование: {% include cat-hue.html id=category.id %} → cat_hue (оттенок 150–320).
+  Новая рубрика получает следующий оттенок сама.
+{%- endcomment -%}
+{%- assign cat_hue = 215 -%}
+{%- for ch_c in site.data.categories -%}
+  {%- if ch_c.id == include.id -%}{%- assign cat_hue = forloop.index0 | times: 53 | modulo: 170 | plus: 150 -%}{%- endif -%}
+{%- endfor -%}
