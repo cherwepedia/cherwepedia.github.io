@@ -125,8 +125,8 @@ layout: default
       {%- elsif page.comments != false and site.telegram_channel %}
       <section class="comments" id="comments" aria-labelledby="comments-title">
         <h2 id="comments-title">Обсуждение</h2>
-        <div class="comments-box" data-comments data-channel="{{ site.telegram_channel }}{% if page.telegram_post %}/{{ page.telegram_post }}{% endif %}">
-          <button class="btn" type="button" data-comments-load>Показать комментарии из Telegram</button>
+        <div class="telegram-comments">
+          <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="{{ site.telegram_channel }}{% if page.telegram_post %}/{{ page.telegram_post }}{% endif %}" data-comments-limit="5"></script>
         </div>
       </section>
       {%- endif %}
