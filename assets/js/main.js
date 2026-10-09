@@ -36,7 +36,6 @@
     root.setAttribute('data-theme', next);
     store('cw:theme', next);
     setTimeout(function () { root.classList.remove('theme-anim'); }, 350);
-    try { if (window.CUSDIS && window.CUSDIS.setTheme) window.CUSDIS.setTheme(next); } catch (e) { /* ignore */ }
   });
 
   /* ======================================================================
@@ -759,40 +758,5 @@
       on(im, 'click', function (e) { e.preventDefault(); open(i); });
       on(im, 'keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
     });
-  })();
-
-  /* ======================================================================
-     Комментарии: Cusdis (анонимные, бесплатные) или Telegram — грузим лениво
-     ====================================================================== */
-  (function () {
-    var box = $('[data-comments-cusdis]') || $('[data-comments]');
-    if (!box) return;
-    var isCusdis = box.hasAttribute('data-comments-cusdis');
-    var loaded = false;
-    function load() {
-      if (loaded) return; loaded = true;
-      var btn = $('[data-comments-load]', box); if (btn) btn.remove();
-      var dark = root.getAttribute('data-theme') === 'dark';
-      var s = doc.createElement('script');
-      s.async = true;
-      if (isCusdis) {
-        var th = $('#cusdis_thread', box);
-        if (th) th.setAttribute('data-theme', dark ? 'dark' : 'light');
-        s.src = 'https://cusdis.com/js/cusdis.es.js';
-      } else {
-        s.src = 'https://telegram.org/js/telegram-widget.js?22';
-        s.setAttribute('data-telegram-discussion', box.getAttribute('data-channel'));
-        s.setAttribute('data-comments-limit', '8');
-        if (dark) s.setAttribute('data-dark', '1');
-      }
-      box.appendChild(s);
-    }
-    on($('[data-comments-load]', box), 'click', load);
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (en) {
-        if (en[0].isIntersecting) { io.disconnect(); load(); }
-      }, { rootMargin: '300px 0px' });
-      io.observe(box);
-    }
   })();
 })();
