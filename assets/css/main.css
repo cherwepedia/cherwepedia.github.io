@@ -6,21 +6,22 @@
 
 :root {
   color-scheme: light;
-  --bg: #fbfcfd;
-  --bg-soft: #f3f6f9;
-  --bg-elev: #ffffff;
-  --text: #2c3441;
-  --text-soft: #586477;
-  --text-mute: #7f8b9b;
-  --border: #e4e9ef;
-  --border-strong: #d3dbe5;
-  --link: #4f71a8;
-  --link-hover: #385584;
-  --link-visited: #7b6ca8;
-  --accent: #6283b3;
-  --accent-hover: #506f9c;
-  --accent-soft: #ecf1f8;
-  --infobox-head: #e7edf5;
+  --bg: #f4f6fc;
+  --page: #e9edf8;
+  --bg-soft: #eaeef8;
+  --bg-elev: #f9faff;
+  --text: #343b50;
+  --text-soft: #5e6781;
+  --text-mute: #8189a4;
+  --border: #dbe1f1;
+  --border-strong: #c9d2e8;
+  --link: #5974b8;
+  --link-hover: #41589a;
+  --link-visited: #8068b0;
+  --accent: #6f86c6;
+  --accent-hover: #5e76b8;
+  --accent-soft: #e5eaf8;
+  --infobox-head: #dfe5f6;
   --mark: hsl(45 70% 87%);
   --cat-dl: 0%;
   --shadow: 0 1px 2px rgba(40, 56, 84, .05), 0 3px 10px rgba(40, 56, 84, .05);
@@ -34,21 +35,22 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #12171e;
-  --bg-soft: #171d25;
-  --bg-elev: #1c232d;
-  --text: #dfe5ec;
-  --text-soft: #a7b2c0;
-  --text-mute: #84909f;
-  --border: #26303b;
-  --border-strong: #34404e;
-  --link: #8fb0e0;
-  --link-hover: #b0c8ee;
-  --link-visited: #b3a5dd;
-  --accent: #6f90c2;
-  --accent-hover: #86a5d1;
-  --accent-soft: #1a2536;
-  --infobox-head: #1d2838;
+  --bg: #262b3a;
+  --page: #1f2330;
+  --bg-soft: #2c3243;
+  --bg-elev: #313849;
+  --text: #d8dcea;
+  --text-soft: #a7aec6;
+  --text-mute: #868ea9;
+  --border: #3a4157;
+  --border-strong: #485069;
+  --link: #9fb3e8;
+  --link-hover: #bccaf2;
+  --link-visited: #bba8e6;
+  --accent: #8aa0da;
+  --accent-hover: #a1b4e4;
+  --accent-soft: #303858;
+  --infobox-head: #313a59;
   --mark: hsla(45, 45%, 62%, .28);
   --cat-dl: -4%;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 3px 10px rgba(0, 0, 0, .22);
@@ -68,7 +70,7 @@ body {
   font-size: 16px;
   line-height: 1.65;
   color: var(--text);
-  background: var(--bg);
+  background: var(--page, var(--bg));
   -webkit-font-smoothing: antialiased;
 }
 img, svg { max-width: 100%; }
@@ -106,7 +108,7 @@ h1, h2, h3, h4 { line-height: 1.25; }
 }
 .brand:hover { color: var(--text); text-decoration: none; }
 .brand-logo { width: 30px; height: 30px; object-fit: contain; border-radius: 0; }
-[data-theme="dark"] .brand-logo { background: #e9edf3; padding: 2px; }
+[data-theme="dark"] .brand-logo { background: #dfe3f0; padding: 2px; }
 
 .search { position: relative; flex: 1 1 auto; max-width: 520px; }
 .search-input {
