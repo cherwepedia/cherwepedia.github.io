@@ -1,6 +1,6 @@
 ---
 category_id: кракен
 title: "Категория: Кракен"
-description: "Статьи рубрики «Кракен»."
+description: "ОПГ Всратые"
 permalink: /кракен/
 ---
