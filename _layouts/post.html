@@ -91,7 +91,6 @@ layout: default
           {%- if c_obj %} <a class="chip has-cat" style="--h:{{ cat_hue }};--lo:{{ cat_lo }}" href="{{ '/' | append: c_obj.id | append: '/' | relative_url }}">{{ c_obj.name }}</a>{% else %} <span class="chip">{{ c }}</span>{% endif %}
           {%- endfor %}
         </p>
-        <p class="article-tools"><button class="btn btn-small" type="button" data-copy-link>Скопировать ссылку</button></p>
         <p class="article-dates">
           Опубликовано <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d.%m.%Y' }}</time>
           {%- if page.last_modified_at %}, изменено <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: '%d.%m.%Y' }}</time>{% endif %}
@@ -110,25 +109,6 @@ layout: default
           {%- endif -%}
         {%- endfor -%}
       {%- endcapture -%}
-      {%- assign pn_found = false -%}
-      {%- assign pn_newer = nil -%}
-      {%- assign pn_older = nil -%}
-      {%- assign pn_last = nil -%}
-      {%- for rp in related_all -%}
-        {%- if pn_found and pn_older == nil -%}{%- assign pn_older = rp -%}{%- endif -%}
-        {%- if rp.url == page.url -%}{%- assign pn_found = true -%}{%- assign pn_newer = pn_last -%}{%- endif -%}
-        {%- assign pn_last = rp -%}
-      {%- endfor -%}
-      {%- if pn_newer or pn_older %}
-      <nav class="post-nav" aria-label="Соседние статьи рубрики">
-        {%- if pn_newer %}
-        <a class="post-nav-item post-nav-prev" href="{{ pn_newer.url | relative_url }}"><span class="post-nav-label">← Новее в рубрике</span><span class="post-nav-title">{{ pn_newer.title | escape }}</span></a>
-        {%- else %}<span></span>{% endif %}
-        {%- if pn_older %}
-        <a class="post-nav-item post-nav-next" href="{{ pn_older.url | relative_url }}"><span class="post-nav-label">Старее в рубрике →</span><span class="post-nav-title">{{ pn_older.title | escape }}</span></a>
-        {%- else %}<span></span>{% endif %}
-      </nav>
-      {%- endif %}
       {%- if related_n > 0 %}
       <section class="related" aria-labelledby="related-title">
         <h2 id="related-title">См. также</h2>

@@ -822,15 +822,4 @@
     on(window, 'scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     update();
   })();
-
-  /* Копирование ссылки на статью */
-  $$('[data-copy-link]').forEach(function (b) {
-    var label = b.textContent;
-    on(b, 'click', function () {
-      var url = location.origin + location.pathname;
-      function done() { b.textContent = 'Ссылка скопирована'; setTimeout(function () { b.textContent = label; }, 1800); }
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { window.prompt('Ссылка:', url); });
-      else window.prompt('Ссылка:', url);
-    });
-  });
 })();
