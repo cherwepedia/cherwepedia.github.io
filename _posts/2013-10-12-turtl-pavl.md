@@ -3,7 +3,7 @@ layout: post
 title: "Туртль Павл!"
 date: 2013-10-12
 categories: [проекты]
-intro: "Эталонное ленивое унылое говно от [Вождя](https://web.archive.org/web/20230528124121/https://chervepedia.com/wiki/%D0%9A%D0%B8%D0%BD%D0%B0%D0%BC%D0%B0%D0%BD), a.k.a. кривая попытка *хайпануть нахалявку*, то есть попереть тему TMNT у [Жжара](https://web.archive.org/web/20230528124121/https://chervepedia.com/wiki/%D0%96%D0%B6%D0%B0%D1%80). Говорящая туртль-шапка не даст соврать. Ненаказуемо."
+intro: "Эталонное ленивое унылое говно от [Вождя](https://web.archive.org/web/20230528124121/https://chervepedia.com/wiki/%D0%9A%D0%B8%D0%BD%D0%B0%D0%BC%D0%B0%D0%BD), a.k.a. кривая попытка *хайпануть нахалявку*, то есть попереть тему TMNT у [Жжара](https://cherwepedia.github.io/%D0%BB%D1%8E%D0%B4%D0%B8/jjar01/). Говорящая туртль-шапка не даст соврать. Ненаказуемо."
 
 infobox:
   image: "/assets/img/posts/2026-10/21a2082314.png"
