@@ -1,8 +1,20 @@
 {%- comment -%}
-  Цвет рубрики: автоматически, по порядку в _data/categories.yml. Использование: {% include cat-hue.html id=category.id %} → cat_hue (оттенок 150–320).
-  Новая рубрика получает следующий оттенок сама.
+  Цвет рубрики — автоматически и уникально: оттенки разнесены «золотым углом» (137°) по всему кругу,
+  а светлота чередуется по трём ступеням, поэтому соседние рубрики не сливаются.
+  Новая рубрика получает следующий свободный цвет, старые не меняются.
+  Свой цвет можно задать в _data/categories.yml полем hue: 0–359.
+  Использование: {% include cat-hue.html id=category.id %} → cat_hue, cat_lo
 {%- endcomment -%}
 {%- assign cat_hue = 215 -%}
+{%- assign cat_lo = '0%' -%}
 {%- for ch_c in site.data.categories -%}
-  {%- if ch_c.id == include.id -%}{%- assign cat_hue = forloop.index0 | times: 53 | modulo: 170 | plus: 150 -%}{%- endif -%}
+  {%- if ch_c.id == include.id -%}
+    {%- if ch_c.hue -%}
+      {%- assign cat_hue = ch_c.hue -%}
+    {%- else -%}
+      {%- assign cat_hue = forloop.index0 | times: 137 | modulo: 360 -%}
+    {%- endif -%}
+    {%- assign ch_tone = forloop.index0 | modulo: 3 -%}
+    {%- if ch_tone == 1 -%}{%- assign cat_lo = '-9%' -%}{%- elsif ch_tone == 2 -%}{%- assign cat_lo = '6%' -%}{%- endif -%}
+  {%- endif -%}
 {%- endfor -%}

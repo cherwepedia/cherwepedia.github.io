@@ -56,6 +56,10 @@
   {%- if cat_posts_check.size == 0 -%}{%- assign page_noindex = true -%}{%- endif -%}
 {%- endif -%}
 
+{%- assign rt_words = content | strip_html | number_of_words -%}
+{%- assign rt_min = rt_words | plus: 199 | divided_by: 200 -%}
+{%- if rt_min < 1 -%}{%- assign rt_min = 1 -%}{%- endif -%}
+
 {%- assign logo_url = site.logo | absolute_url -%}
 {%- assign org_id = site.url | append: '/#organization' -%}
 {%- assign web_id = site.url | append: '/#website' -%}
@@ -167,7 +171,8 @@
       "publisher": { "@id": {{ org_id | jsonify }} },
       {% if cat_obj %}"articleSection": {{ cat_obj.name | jsonify }},{% endif %}
       "keywords": {{ page.categories | join: ', ' | jsonify }},
-      "wordCount": {{ content | number_of_words }},
+      "wordCount": {{ content | strip_html | number_of_words }},
+      "timeRequired": "PT{{ rt_min }}M",
       "isAccessibleForFree": true
     }{% else %},
     {

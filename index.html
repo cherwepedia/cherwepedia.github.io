@@ -83,7 +83,7 @@ description: "Червепедия — энциклопедия Черветре
       {%- for category in site.data.categories -%}
           {%- assign cc_posts = site.posts | where_exp: 'p', 'p.categories contains category.id' -%}
           {%- if cc_posts.size > 0 -%}
-          {%- include cat-hue.html id=category.id -%}<li><a class="cat-chip has-cat" style="--h:{{ cat_hue }}" href="{{ '/' | append: category.id | append: '/' | relative_url }}"><span class="cat-chip-name">{{ category.name }}</span><span class="cat-chip-desc">{{ category.description }}</span><span class="cat-chip-count">{{ cc_posts.size }}</span></a></li>
+          {%- include cat-hue.html id=category.id -%}<li><a class="cat-chip has-cat" style="--h:{{ cat_hue }};--lo:{{ cat_lo }}" href="{{ '/' | append: category.id | append: '/' | relative_url }}"><span class="cat-chip-name">{{ category.name }}</span><span class="cat-chip-desc">{{ category.description }}</span><span class="cat-chip-count">{{ cc_posts.size }}</span></a></li>
           {%- endif -%}
       {%- endfor -%}
     </ul>

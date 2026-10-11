@@ -782,4 +782,55 @@
       io.observe(box);
     } else start();
   })();
+
+  /* ======================================================================
+     Удобства: «/» — в поиск, кнопка «наверх», полоса прогресса чтения
+     ====================================================================== */
+  on(doc, 'keydown', function (e) {
+    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target, tag = t && t.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+    var inp = $('[data-search-input]');
+    if (inp) { e.preventDefault(); inp.focus(); inp.select(); }
+  });
+
+  (function () {
+    var up = doc.createElement('button');
+    up.type = 'button'; up.className = 'to-top'; up.hidden = true;
+    up.setAttribute('aria-label', 'Наверх');
+    up.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 15 7-7 7 7"/></svg>';
+    body.appendChild(up);
+    on(up, 'click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+    var article = $('#article-content'), bar = null;
+    if (article) {
+      bar = doc.createElement('div'); bar.className = 'read-progress'; bar.setAttribute('aria-hidden', 'true');
+      body.appendChild(bar);
+    }
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var y = window.pageYOffset;
+      up.hidden = y < 700;
+      if (bar) {
+        var r = article.getBoundingClientRect();
+        var total = r.height - window.innerHeight * 0.6;
+        var p = total > 0 ? Math.min(1, Math.max(0, (-r.top + 60) / total)) : 0;
+        bar.style.transform = 'scaleX(' + p + ')';
+      }
+    }
+    on(window, 'scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  })();
+
+  /* Копирование ссылки на статью */
+  $$('[data-copy-link]').forEach(function (b) {
+    var label = b.textContent;
+    on(b, 'click', function () {
+      var url = location.origin + location.pathname;
+      function done() { b.textContent = 'Ссылка скопирована'; setTimeout(function () { b.textContent = label; }, 1800); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { window.prompt('Ссылка:', url); });
+      else window.prompt('Ссылка:', url);
+    });
+  });
 })();

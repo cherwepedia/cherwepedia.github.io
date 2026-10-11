@@ -13,7 +13,7 @@ layout: default
     </ol>
   </nav>
   {%- include cat-hue.html id=cid %}
-  <header class="page-header has-cat" style="--h:{{ cat_hue }}">
+  <header class="page-header has-cat" style="--h:{{ cat_hue }};--lo:{{ cat_lo }}">
     <h1 class="page-title">{{ page.title | escape }}</h1>
     {%- if cat.description %}<p class="page-lead">{{ cat.description | escape }}</p>{% endif %}
   </header>
@@ -25,8 +25,16 @@ layout: default
   {%- if cat_posts.size > 0 %}
   <div class="list-toolbar">
     <p class="list-count">Статей в рубрике: <strong>{{ cat_posts.size }}</strong></p>
+    <div class="list-controls">
+      <label class="select-wrap">Сортировка:
+        <select data-sort aria-label="Сортировка">
+          <option value="date">Сначала новые</option>
+          <option value="title">По алфавиту</option>
+        </select>
+      </label>
+    </div>
   </div>
-  <ol class="entry-list" data-paginate>
+  <ol class="entry-list" data-paginate data-sortable>
     {%- for p in cat_posts %}
     {% include article-item.html post=p %}
     {%- endfor %}
