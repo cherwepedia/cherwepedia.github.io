@@ -683,7 +683,9 @@
   (function () {
     var imgs = $$('img[data-lightbox]');
     if (!imgs.length) return;
-    var lb = null, el = {}, cur = 0, lastFocus = null, sx = 0, sy = 0;
+    var all = imgs, lb = null, el = {}, cur = 0, lastFocus = null, sx = 0, sy = 0;
+    // листаем только внутри своей карусели/галереи; одиночные картинки (инфобокс, врезки) — отдельная группа
+    function groupOf(im) { return im.closest('[data-carousel], .gallery-pager, .gallery-block, .article-gallery') || 'loose'; }
 
     function build() {
       lb = doc.createElement('div');
@@ -737,6 +739,9 @@
       else if (e.key === 'Tab') { e.preventDefault(); el.close.focus(); }
     }
     function open(n) {
+      var target = all[n], g = groupOf(target);
+      imgs = all.filter(function (x) { return groupOf(x) === g; });
+      n = imgs.indexOf(target);
       if (!lb) build();
       lastFocus = doc.activeElement;
       doc.body.appendChild(lb);
@@ -752,7 +757,7 @@
       doc.removeEventListener('keydown', onKey);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
-    imgs.forEach(function (im, i) {
+    all.forEach(function (im, i) {
       im.tabIndex = 0;
       im.setAttribute('role', 'button');
       on(im, 'click', function (e) { e.preventDefault(); open(i); });

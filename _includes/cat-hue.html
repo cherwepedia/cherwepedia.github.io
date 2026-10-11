@@ -1,20 +1,28 @@
 {%- comment -%}
-  Цвет рубрики — автоматически и уникально: приглушённые холодные оттенки (бирюзовый → синий → фиолетовый, 160–300°)
-  разнесены «золотым сечением», а светлота чередуется по трём ступеням, поэтому соседние рубрики не сливаются.
-  Новая рубрика получает следующий свободный цвет, старые не меняются.
-  Свой цвет можно задать в _data/categories.yml полем hue: 0–359.
-  Использование: {% include cat-hue.html id=category.id %} → cat_hue, cat_lo
+  Цвет рубрики — автоматически и уникально. Берётся из подобранной палитры приглушённых цветов, где соседние цвета
+  заметно отличаются. 12 рубрик — все разные; дальше палитра повторяется со сдвигом оттенка и светлоты.
+  Новая рубрика получает следующий цвет, у старых цвет не меняется. Свой цвет: поле hue: 0–359 в _data/categories.yml.
+  Использование: {% include cat-hue.html id=category.id %} → cat_hue, cat_sat, cat_lit
 {%- endcomment -%}
 {%- assign cat_hue = 215 -%}
-{%- assign cat_lo = '0%' -%}
+{%- assign cat_sat = '30%' -%}
+{%- assign cat_lit = '64%' -%}
+{%- assign pal_h = '205,150,265,330,185,238,95,292,12,170,222,48' | split: ',' -%}
+{%- assign pal_s = '40,30,34,30,36,38,26,26,34,30,28,36' | split: ',' -%}
+{%- assign pal_l = '62,56,68,68,56,70,56,66,70,48,52,60' | split: ',' -%}
 {%- for ch_c in site.data.categories -%}
   {%- if ch_c.id == include.id -%}
+    {%- assign ch_i = forloop.index0 | modulo: 12 -%}
+    {%- assign ch_round = forloop.index0 | divided_by: 12 -%}
     {%- if ch_c.hue -%}
       {%- assign cat_hue = ch_c.hue -%}
     {%- else -%}
-      {%- assign cat_hue = forloop.index0 | times: 618 | modulo: 1000 | times: 14 | divided_by: 100 | plus: 160 -%}
+      {%- assign ch_base = pal_h[ch_i] | plus: 0 -%}
+      {%- assign cat_hue = ch_round | times: 23 | plus: ch_base | modulo: 360 -%}
     {%- endif -%}
-    {%- assign ch_tone = forloop.index0 | modulo: 3 -%}
-    {%- if ch_tone == 1 -%}{%- assign cat_lo = '-9%' -%}{%- elsif ch_tone == 2 -%}{%- assign cat_lo = '6%' -%}{%- endif -%}
+    {%- assign ch_sv = pal_s[ch_i] | plus: 0 -%}
+    {%- assign ch_lv = pal_l[ch_i] | plus: 0 | minus: ch_round -%}
+    {%- assign cat_sat = ch_sv | append: '%' -%}
+    {%- assign cat_lit = ch_lv | append: '%' -%}
   {%- endif -%}
 {%- endfor -%}

@@ -18,6 +18,7 @@ logo: /assets/img/logo.png
 # Комментарии. Telegram выключен (код сохранён в _layouts/post.html) — включается значением true.
 comments_telegram: false
 comments_twikoo: true
+# Адрес вашего Twikoo (например https://twikoo-xxxx.vercel.app) или ID окружения. Пока пусто — блок комментариев не показывается.
 twikoo_env_id: "https://musical-speculoos-359c69.netlify.app/.netlify/functions/twikoo"
 seasonal_effects: true                     # осенью — тыквы в шапке главной (false — выключить)
 telegram_channel: chervethreadoff          # канал с комментариями (виджет обсуждения под статьёй)
@@ -33,7 +34,7 @@ hidden_categories:
 
 home_latest: 8        # сколько последних статей на главной
 page_size: 20         # статей на одной странице списков (пагинация)
-related_limit: 3      # блок «См. также» под статьёй
+related_limit: 6      # блок «См. также» под статьёй
 
 # --- Сборка -------------------------------------------------
 permalink: /:categories/:title/
@@ -64,4 +65,6 @@ exclude:
   - vendor
   - .github
 
+# Плагины не нужны: sitemap.xml, feed.xml, поиск и пагинация сделаны своими средствами,
+# поэтому сайт собирается стандартным GitHub Pages без сюрпризов.
 plugins: []

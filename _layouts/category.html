@@ -13,7 +13,7 @@ layout: default
     </ol>
   </nav>
   {%- include cat-hue.html id=cid %}
-  <header class="page-header has-cat" style="--h:{{ cat_hue }};--lo:{{ cat_lo }}">
+  <header class="page-header has-cat" style="--h:{{ cat_hue }};--s:{{ cat_sat }};--l:{{ cat_lit }}">
     <h1 class="page-title">{{ page.title | escape }}</h1>
     {%- if cat.description %}<p class="page-lead">{{ cat.description | escape }}</p>{% endif %}
   </header>
