@@ -1,7 +1,7 @@
 {%- comment -%}
   Цвет рубрики — автоматически и уникально. Берётся из подобранной палитры приглушённых цветов, где соседние цвета
   заметно отличаются. 12 рубрик — все разные; дальше палитра повторяется со сдвигом оттенка и светлоты.
-  Новая рубрика получает следующий цвет, у старых цвет не меняется. Свой цвет: поле hue: 0–359 в _data/categories.yml.
+  Новая рубрика получает следующий цвет, у старых цвет не меняется. Выбор цвета из палитры: поле color: 1–12 в _data/categories.yml (его ставит редактор). Свой оттенок: hue: 0–359.
   Использование: {% include cat-hue.html id=category.id %} → cat_hue, cat_sat, cat_lit
 {%- endcomment -%}
 {%- assign cat_hue = 215 -%}
@@ -14,7 +14,11 @@
   {%- if ch_c.id == include.id -%}
     {%- assign ch_i = forloop.index0 | modulo: 12 -%}
     {%- assign ch_round = forloop.index0 | divided_by: 12 -%}
-    {%- if ch_c.hue -%}
+    {%- if ch_c.color -%}
+      {%- assign ch_i = ch_c.color | plus: 0 | minus: 1 | modulo: 12 -%}
+      {%- assign ch_round = 0 -%}
+      {%- assign cat_hue = pal_h[ch_i] | plus: 0 -%}
+    {%- elsif ch_c.hue -%}
       {%- assign cat_hue = ch_c.hue -%}
     {%- else -%}
       {%- assign ch_base = pal_h[ch_i] | plus: 0 -%}
