@@ -759,4 +759,27 @@
       on(im, 'keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
     });
   })();
+
+  /* ======================================================================
+     Комментарии Twikoo (подгружаются, когда блок приближается к экрану)
+     ====================================================================== */
+  (function () {
+    var box = $('[data-twikoo]');
+    if (!box) return;
+    var started = false;
+    function start() {
+      if (started) return; started = true;
+      var s = doc.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/twikoo@2.0.13/dist/twikoo.min.js';
+      s.async = true;
+      s.onload = function () {
+        try { window.twikoo.init({ envId: box.getAttribute('data-env'), el: '#twikoo', path: location.pathname }); } catch (e) { /* ignore */ }
+      };
+      doc.head.appendChild(s);
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '400px 0px' });
+      io.observe(box);
+    } else start();
+  })();
 })();

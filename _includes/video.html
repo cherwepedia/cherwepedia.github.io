@@ -1,0 +1,30 @@
+{%- comment -%}
+  Видео в статье: ссылка на YouTube / Rutube / Vimeo или прямой .mp4 / .webm.
+  {% include video.html url="https://www.youtube.com/watch?v=XXXX" caption="Подпись" %}
+{%- endcomment -%}
+{%- assign v_url = include.url | strip -%}
+{%- assign v_src = v_url -%}
+{%- assign v_file = false -%}
+{%- if v_url contains '.mp4' or v_url contains '.webm' -%}
+  {%- assign v_file = true -%}
+{%- elsif v_url contains 'youtu.be/' -%}
+  {%- assign v_id = v_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+  {%- assign v_src = 'https://www.youtube-nocookie.com/embed/' | append: v_id -%}
+{%- elsif v_url contains 'youtube.com/watch' -%}
+  {%- assign v_id = v_url | split: 'v=' | last | split: '&' | first -%}
+  {%- assign v_src = 'https://www.youtube-nocookie.com/embed/' | append: v_id -%}
+{%- elsif v_url contains 'youtube.com/shorts/' -%}
+  {%- assign v_id = v_url | split: 'shorts/' | last | split: '?' | first -%}
+  {%- assign v_src = 'https://www.youtube-nocookie.com/embed/' | append: v_id -%}
+{%- elsif v_url contains 'youtube.com/embed/' -%}
+  {%- assign v_id = v_url | split: 'embed/' | last | split: '?' | first -%}
+  {%- assign v_src = 'https://www.youtube-nocookie.com/embed/' | append: v_id -%}
+{%- elsif v_url contains 'rutube.ru/video/' -%}
+  {%- assign v_id = v_url | split: 'rutube.ru/video/' | last | split: '/' | first | split: '?' | first -%}
+  {%- assign v_src = 'https://rutube.ru/play/embed/' | append: v_id -%}
+{%- elsif v_url contains 'vimeo.com/' -%}
+  {%- assign v_id = v_url | split: 'vimeo.com/' | last | split: '/' | first | split: '?' | first -%}
+  {%- assign v_src = 'https://player.vimeo.com/video/' | append: v_id -%}
+{%- endif -%}
+<figure class="video"><div class="video-frame">{% if v_file %}<video src="{{ v_src }}" controls preload="metadata" playsinline></video>{% else %}<iframe src="{{ v_src }}" title="{{ include.caption | default: 'Видео' | escape }}" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>{% endif %}</div>{% if include.caption %}<figcaption>{{ include.caption | escape }}</figcaption>{% endif %}</figure>
+

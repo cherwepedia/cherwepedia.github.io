@@ -15,6 +15,11 @@ encoding: utf-8
 # --- SEO / аналитика / соцсети -----------------------------
 og_image: /assets/img/og-default.png
 logo: /assets/img/logo.png
+# Комментарии. Telegram выключен (код сохранён в _layouts/post.html) — включается значением true.
+comments_telegram: false
+comments_twikoo: true
+# Адрес вашего Twikoo (например https://twikoo-xxxx.vercel.app) или ID окружения. Пока пусто — блок комментариев не показывается.
+twikoo_env_id: "https://musical-speculoos-359c69.netlify.app/.netlify/functions/twikoo"
 seasonal_effects: true                     # осенью — тыквы в шапке главной (false — выключить)
 telegram_channel: chervethreadoff          # канал с комментариями (виджет обсуждения под статьёй)
 yandex_verification: "54e3598f9a8e64fd"

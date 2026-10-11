@@ -115,8 +115,16 @@ layout: default
       {%- endif %}
 
       {%- if page.comments != false %}
+      {%- if site.comments_twikoo and site.twikoo_env_id != blank %}
+      <!-- Twikoo -->
+      <section class="comments" id="comments" aria-labelledby="comments-title">
+        <h2 id="comments-title">Обсуждение</h2>
+        <div id="twikoo" data-twikoo data-env="{{ site.twikoo_env_id }}"></div>
+      </section>
+      {%- endif %}
+      {%- if site.comments_telegram %}
       <!-- Telegram Discussion Widget -->
-      <section class="comments article-comments" id="comments">
+      <section class="comments article-comments" id="comments-telegram">
         <div class="telegram-comments">
           <script
             async
@@ -126,6 +134,7 @@ layout: default
           </script>
         </div>
       </section>
+      {%- endif %}
       {%- endif %}
     </div>
   </div>
