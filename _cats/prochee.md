@@ -1,6 +1,6 @@
 ---
 category_id: прочее
 title: "Категория: Прочее"
-description: "Статьи рубрики «Прочее»."
+description: "Прочее."
 permalink: /прочее/
 ---
