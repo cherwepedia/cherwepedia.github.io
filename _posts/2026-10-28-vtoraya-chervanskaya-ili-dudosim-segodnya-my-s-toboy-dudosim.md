@@ -7,21 +7,6 @@ intro: "К концу июля 2015 года Черваны настолько �
 
 infobox:
   image: "/assets/img/posts/2026-10/d10e76061d.png"
-  data:
-    - label: "Настоящее имя"
-      value: ""
-    - label: "Дата рождения"
-      value: ""
-    - label: "Место рождения"
-      value: ""
-    - label: "Род деятельности"
-      value: ""
-    - label: "Годы активности"
-      value: ""
-    - label: "Известен как"
-      value: ""
-    - label: "Статус"
-      value: ""
 
 gallery:
   - src: "/assets/img/posts/2026-10/1aa734d517.png"
