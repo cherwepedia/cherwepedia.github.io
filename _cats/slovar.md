@@ -1,6 +1,6 @@
 ---
 category_id: словарь
 title: "Категория: Словарь"
-description: "Статьи рубрики «Словарь»."
+description: "Словарь спреда."
 permalink: /словарь/
 ---
