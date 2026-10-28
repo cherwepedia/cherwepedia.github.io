@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Червеалфавит"
-date: 2026-10-28
+date: 2013-10-28
 categories: [словарь]
 
 infobox:
