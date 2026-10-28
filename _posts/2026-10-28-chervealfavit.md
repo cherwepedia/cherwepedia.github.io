@@ -5,7 +5,7 @@ date: 2013-10-28
 categories: [словарь]
 
 infobox:
-  image: ""
+  image: "/assets/img/posts/2026-10/e3c854cd5d.png"
 ---
 ## А
 
