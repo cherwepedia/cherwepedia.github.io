@@ -2,7 +2,7 @@
 layout: post
 title: "Kinamania The Game"
 date: 2015-10-12
-categories: [проекты]
+categories: [проекты, игры]
 intro: "Официальный долгострой от Вождя в жанре beat’em up.<br>"
 
 infobox:
