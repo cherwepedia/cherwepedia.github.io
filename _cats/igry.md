@@ -1,6 +1,6 @@
 ---
 category_id: игры
 title: "Категория: Игры"
-description: "Статьи рубрики «Игры»."
+description: "игры про кинаманию"
 permalink: /игры/
 ---
