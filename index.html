@@ -2,7 +2,7 @@
 layout: default
 title: Главная
 permalink: /
-description: "Червепедия — энциклопедия Черветреда: статьи о людях, событиях, мемах и истории треда. Поиск, рубрики, случайные статьи."
+description: "Червепедия — официальная энциклопедия Черветреда: статьи о Кинамании, событиях, мемах и истории треда. Поиск, рубрики, случайные статьи."
 ---
 {%- assign visible_count = 0 -%}
 {%- for p in site.posts -%}
@@ -12,7 +12,7 @@ description: "Червепедия — энциклопедия Черветре
 <div class="home">
   <section class="home-hero" data-hero>
     <h1 class="home-title">{{ site.title }} — энциклопедия Черветреда</h1>
-    <p class="home-sub">Свободно читаемая энциклопедия о Черветреде.{% if visible_count > 0 %} Сейчас в ней <strong>{{ visible_count }}</strong> {% assign m10 = visible_count | modulo: 10 %}{% assign m100 = visible_count | modulo: 100 %}{% if m10 == 1 and m100 != 11 %}статья{% elsif m10 >= 2 and m10 <= 4 and m100 != 12 and m100 != 13 and m100 != 14 %}статьи{% else %}статей{% endif %}.{% endif %}</p>
+    <p class="home-sub">Официальная  энциклопедия о Черветреде.{% if visible_count > 0 %} Сейчас в ней <strong>{{ visible_count }}</strong> {% assign m10 = visible_count | modulo: 10 %}{% assign m100 = visible_count | modulo: 100 %}{% if m10 == 1 and m100 != 11 %}статья{% elsif m10 >= 2 and m10 <= 4 and m100 != 12 and m100 != 13 and m100 != 14 %}статьи{% else %}статей{% endif %}.{% endif %}</p>
     <form class="search search--hero" role="search" action="{{ '/search/' | relative_url }}" method="get" data-search-form>
       <input class="search-input" type="search" name="q" placeholder="Что вы хотите найти?" aria-label="Поиск по энциклопедии" autocomplete="off" spellcheck="false" enterkeyhint="search" data-search-input>
       <button class="search-btn" type="submit" aria-label="Найти">
