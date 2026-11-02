@@ -46,3 +46,6 @@
 - id: игры
   name: "Игры"
   description: "игры про кинаманию"
+- id: youtube
+  name: "Youtube"
+  description: "Статьи рубрики «Youtube»."
